@@ -12,13 +12,12 @@ class Cat(Command):
 
         output = ''
         for i, arg in enumerate(self.args):
-            if i != 0:
-                output += '\n'
             if os.path.isfile(arg):
                 with open(arg, 'r') as src:
-                    output += src.read()[:-1]
+                    output += src.read()
+            elif os.path.isdir(arg):
+                output += f'cat: {arg}: is a directory\n'
             else:
-                output += f'cat: {arg}: No such file or directory'
+                output += f'cat: {arg}: no such file or directory\n'
                 
         return output
-

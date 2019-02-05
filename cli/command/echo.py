@@ -6,5 +6,5 @@ class Echo(Command):
         super().__init__(args)
 
     def execute(self, data: str = None) -> str:
-        return ' '.join(map(lambda arg : str(arg), self.args))
+        return ' '.join(map(str, self.args)) + '\n'
 

@@ -1,4 +1,4 @@
-from .command import Command, UnknownOptionError
+from .command import Command
 import os
 
 
@@ -7,7 +7,4 @@ class Pwd(Command):
         super().__init__(args)
 
     def execute(self, data: str = None) -> str:
-        if len(self.args) != 0:
-            raise UnknownOptionError('Command `pwd` expects no arguments, but some were passed')
-        return os.getcwd()
-
+        return os.getcwd() + '\n'

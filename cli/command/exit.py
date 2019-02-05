@@ -8,5 +8,3 @@ class Exit(Command):
 
     def execute(self, data: str = None):
         sys.exit(0)
-
-

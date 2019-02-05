@@ -1,30 +1,40 @@
-#!/usr/bin/env python3
-
-from command import get_command
 import sys
-
-def read_command():
-    line = sys.stdin.readline()
-    args = list(filter(lambda arg: len(arg) > 0, line.strip().split()))
-    if len(args) == 0:
-        return None
-    return get_command(args[0], args[1:])
- 
-
-def run():
-    while True:
-        try:
-            sys.stdout.write('$ ')
-            sys.stdout.flush()
-            command = read_command()
-            if command is None:
-                continue
-            sys.stdout.write(command.execute() + '\n')
-        except KeyboardInterrupt:
-            sys.stdout.write('\n')
-            pass
+from .parser import Parser, ParsingError
+from .env import Environment
 
 
-if __name__ == '__main__':
-    run()
+class CommandLineInterpreter:
+    def __init__(self, environment : Environment):
+        self.environment = environment
 
+    def run(self):
+        while True:
+            try:
+                sys.stdout.write('$ ')
+                sys.stdout.flush()
+
+                input = sys.stdin.readline()[:-1]
+                output = self._execute(input)
+                sys.stdout.write(output)
+
+            except KeyboardInterrupt:
+                sys.stdout.write('\n')
+            except ParsingError as e:
+                sys.stdout.write(e.message)
+
+    def _execute(self, line: str) -> str:
+        if line.isspace():
+            return ''
+
+        parser = Parser(line, self.environment)
+        if parser.is_variable():
+            variable = parser.parse_variable()
+            self.environment.set_variable(*variable)
+            return ''
+        else:
+            result = None
+            pipeline = parser.parse_command()
+            for arg in pipeline:
+                command = self.environment.get_command(arg[0], arg[1:])
+                result = command.execute(result)
+            return result
