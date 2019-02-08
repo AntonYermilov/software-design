@@ -39,3 +39,17 @@ In the infinite loop command line interpreter reads data from the standard input
 Inside it data is parsed with Parser basing on the predefined Environment, and if the parsing process succeeded we get
 an array of commands and their arguments (pipeline). After that we move through commands, execute them and pass their
 output either to the next commands, or to the standard output if no commands left.
+
+## Class diagram
+
+```
+           –––––––          ––––––––––
+           |     | –––––––> | Parser |
+           |     |          ––––––––––
+stdin –––> |     |              |
+           | CLI |              | Variables
+stdout <–– |     |              v
+           |     |          –––––––––––––––          –––––––––––
+           |     | –––––––> | Environment | –––––––> | Command |
+           –––––––          –––––––––––––––          –––––––––––
+```
