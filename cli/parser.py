@@ -23,7 +23,12 @@ class Parser:
         pos = self.command.find('=')
         if pos == -1 or pos + 1 == len(self.command):
             return False
-        return pos != 0 and self.command[:pos].isalnum() and not self.command[pos + 1].isspace()
+
+        correct = True
+        for c in self.command[:pos]:
+            correct &= c.isalnum() or c == '_'
+
+        return pos != 0 and correct and not self.command[pos + 1].isspace()
 
     def parse_variable(self) -> list:
         """

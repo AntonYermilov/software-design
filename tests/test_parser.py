@@ -150,8 +150,14 @@ def test_variable_substitution_single_quotes():
     assert parser.parse_command() == [['echo', '$a']]
 
 
-def test_is_variable():
+def test_is_variable_1():
     command = 'a=b'
+    parser = Parser(command, Environment())
+    assert parser.is_variable()
+
+
+def test_is_variable_2():
+    command = 'CURRENT_DIR="software-design"'
     parser = Parser(command, Environment())
     assert parser.is_variable()
 
