@@ -40,3 +40,8 @@ def test_get_variable():
     cli = init_standard_cli()
     cli.execute('a="hello world"')
     assert cli.execute('echo $a') == 'hello world\n'
+
+
+def test_no_command_found_error():
+    cli = init_standard_cli()
+    assert cli.execute('echi "hello world"') == 'echi: command not found\n'

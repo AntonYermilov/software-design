@@ -1,4 +1,5 @@
-from cli.command.extprocess import ExternalProcess
+from cli.command.extprocess import ExternalProcess, CommandNotFoundError
+import pytest
 
 
 def test_script():
@@ -8,7 +9,8 @@ def test_script():
 
 def test_unknown_program():
     process = ExternalProcess('abacaba  228', [])
-    assert process.execute() == 'abacaba  228: command not found\n'
+    with pytest.raises(CommandNotFoundError):
+        process.execute()
 
 
 def test_external_cat_with_data():

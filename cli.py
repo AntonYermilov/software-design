@@ -1,13 +1,11 @@
 import sys
-import re
 from cli import CLI
 
 
 def get_current_dir():
     home = CLI.environment.get_variable('HOME')
     working_dir = CLI.environment.get_variable('PWD')
-    regex = f'^{home}[/|$]'
-    if re.search(regex, working_dir):
+    if working_dir.find(home) == 0 and (len(home) == len(working_dir) or working_dir[len(home)] == '/'):
         working_dir = working_dir.replace(home, '~')
     return working_dir
 

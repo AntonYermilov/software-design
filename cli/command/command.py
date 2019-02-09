@@ -20,12 +20,9 @@ class Command(ABC):
         pass
 
 
-class UnknownOptionError(Exception):
-    def __init__(self, command, option):
-        """
-        Class represents error that may be thrown in case command received
-        unknown options.
-        :param command: name of the command that was executed
-        :param option: unknown option that was passed to the command as an argument
-        """
-        self.message = f'{command}: unknown option `{option}\'\n'
+class CommandExecutionError(Exception):
+    """
+    Class represent interface for errors that occur while executing commands.
+    """
+    def __init__(self, message):
+        self.message = message

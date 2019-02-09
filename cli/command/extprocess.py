@@ -1,5 +1,5 @@
 import subprocess
-from .command import Command
+from .command import Command, CommandExecutionError
 
 
 class ExternalProcess(Command):
@@ -26,5 +26,13 @@ class ExternalProcess(Command):
             else:
                 proc = subprocess.run([self.command, *self.args], stdout=subprocess.PIPE, input=data.encode('utf-8'))
         except FileNotFoundError:
-            return f'{self.command}: command not found\n'
+            raise CommandNotFoundError(self.command)
         return proc.stdout.decode('utf-8')
+
+
+class CommandNotFoundError(CommandExecutionError):
+    """
+    Class represents error that occur in case no external command with specified name was found
+    """
+    def __init__(self, command: str):
+        super().__init__(f'{command}: command not found\n')
