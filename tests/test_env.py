@@ -38,6 +38,13 @@ def test_exit():
     assert isinstance(env.get_command('exit', ['arg1', 'arg2']), Exit)
 
 
+def test_path_variables():
+    env = init_standard_env()
+    home = env.get_variable('HOME')
+    pwd = env.get_variable('PWD')
+    assert pwd.find(home) == 0 and (len(pwd) == len(home) or pwd[len(home)] == '/')
+
+
 def test_set_variable():
     cur = Environment(commands={}, variables={})
     cur.set_variable('var1', 'val1')
