@@ -1,10 +1,11 @@
 from .cli import CommandLineInterpreter
 from .env import Environment
-from .command.wc import Wc
-from .command.cat import Cat
-from .command.echo import Echo
-from .command.pwd import Pwd
-from .command.exit import Exit
+from cli.command.wc import Wc
+from cli.command.cat import Cat
+from cli.command.echo import Echo
+from cli.command.pwd import Pwd
+from cli.command.grep import Grep
+from cli.command.exit import Exit
 import os
 
 
@@ -18,6 +19,7 @@ _commands = {
     'cat': Cat,
     'echo': Echo,
     'pwd': Pwd,
+    'grep': Grep,
     'exit': Exit,
 }
 

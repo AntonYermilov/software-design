@@ -4,6 +4,7 @@ from cli.command.echo import Echo
 from cli.command.cat import Cat
 from cli.command.pwd import Pwd
 from cli.command.wc import Wc
+from cli.command.grep import Grep
 from cli.command.exit import Exit
 from tests import init_standard_env
 
@@ -31,6 +32,11 @@ def test_pwd():
 def test_wc():
     env = init_standard_env()
     assert isinstance(env.get_command('wc', ['arg1', 'arg2']), Wc)
+
+
+def test_grep():
+    env = init_standard_env()
+    assert isinstance(env.get_command('grep', ['arg1', 'arg2']), Grep)
 
 
 def test_exit():

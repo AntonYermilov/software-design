@@ -45,3 +45,17 @@ def test_get_variable():
 def test_no_command_found_error():
     cli = init_standard_cli()
     assert cli.execute('echi "hello world"') == 'echi: command not found\n'
+
+
+def test_invalid_arguments_error_1():
+    cli = init_standard_cli()
+    assert cli.execute('echo a | grep') == 'usage: grep [-i] [-w] [-A N] pattern [file [file ...]]\n' \
+                                           'grep: the following arguments are required: pattern, file\n'
+
+
+def test_invalid_arguments_error_2():
+    cli = init_standard_cli()
+    assert cli.execute('echo a | grep -j a') == 'usage: grep [-i] [-w] [-A N] pattern [file [file ...]]\n' \
+                                                'grep: unrecognized arguments: -j\n'
+
+
