@@ -22,17 +22,8 @@ class CommandLineInterpreter:
 
         try:
             parser = Parser(line, self.environment)
-            if parser.is_variable():
-                variable = parser.parse_variable()
-                self.environment.set_variable(*variable)
-                return ''
-            else:
-                result = None
-                pipeline = parser.parse_command()
-                for arg in pipeline:
-                    command = self.environment.get_command(arg[0], arg[1:])
-                    result = command.execute(result)
-                return result
+            expression = parser.parse()
+            return expression.execute()
         except ParsingError as e:
             return e.message
         except CommandExecutionError as e:

@@ -1,4 +1,5 @@
 from .env import Environment
+from .expression import Expression, _Assignment, _Pipeline
 
 
 class Parser:
@@ -14,7 +15,13 @@ class Parser:
         self.command = command
         self.environment = environment
 
-    def is_variable(self) -> bool:
+    def parse(self) -> Expression:
+        if self._is_assignment():
+            return self._parse_assignment()
+        else:
+            return self._parse_pipeline()
+
+    def _is_assignment(self) -> bool:
         """
         Checks whether specified command should be parsed as a variable creation or as a
         command execution.
@@ -30,7 +37,7 @@ class Parser:
 
         return pos != 0 and correct and not self.command[pos + 1].isspace()
 
-    def parse_variable(self) -> list:
+    def _parse_assignment(self) -> _Assignment:
         """
         Tries to parse command line as a variable creation.
         :return: list of two elements, first one corresponds to the variable name, second
@@ -49,9 +56,9 @@ class Parser:
             raise UnexpectedTokenError('|')
         if len(args) > 1:
             raise UnexpectedTokenError(args[1])
-        return [name, args[0]]
+        return _Assignment(self.environment, [name, args[0]])
 
-    def parse_command(self) -> list:
+    def _parse_pipeline(self) -> _Pipeline:
         """
         Tries to parse command line as a command execution.
         :return: a list of commands which were separated by pipes; each command is
@@ -61,20 +68,17 @@ class Parser:
         syntax error
         """
         self.index = 0
-        return self._parse_pipeline(self.command)
-
-    def _parse_pipeline(self, command: str) -> list:
         pipeline = [[]]
-        while self.index < len(command):
-            self._parse_command(command, pipeline[-1])
-            if self.index < len(command):
+        while self.index < len(self.command):
+            self._parse_command(self.command, pipeline[-1])
+            if self.index < len(self.command):
                 pipeline.append([])
                 self.index += 1
 
         for args in pipeline:
             if len(pipeline) > 1 and len(args) == 0:
                 raise UnexpectedTokenError('|')
-        return pipeline
+        return _Pipeline(self.environment, pipeline)
 
     def _parse_command(self, command: str, args: list):
         was_space = True
