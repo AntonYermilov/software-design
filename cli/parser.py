@@ -16,6 +16,11 @@ class Parser:
         self.environment = environment
 
     def parse(self) -> Expression:
+        """
+        Parses string into expression (either pipeline or assignment)
+        :return: Expression object which can be execute in order either to set variable
+        or to run commands
+        """
         if self._is_assignment():
             return self._parse_assignment()
         else:
@@ -40,8 +45,8 @@ class Parser:
     def _parse_assignment(self) -> _Assignment:
         """
         Tries to parse command line as a variable creation.
-        :return: list of two elements, first one corresponds to the variable name, second
-        one corresponds to the variable value
+        :return: Assignment object, which is a shell over a list with two elements,
+        first one corresponds to the variable name, second one corresponds to the variable value
         :exception ParsingError: if the specified command cannot be parsed because of a
         syntax error
         """
@@ -60,10 +65,10 @@ class Parser:
 
     def _parse_pipeline(self) -> _Pipeline:
         """
-        Tries to parse command line as a command execution.
-        :return: a list of commands which were separated by pipes; each command is
-        represented as a list of string tokens, first of which is a command name, and
-        others are command arguments
+        Tries to parse command line as a pipeline.
+        :return: Pipeline object, which is a shell over a list of commands which were
+        separated by pipes; each command is represented as a list of string tokens,
+        first of which is a command name, and others are command arguments
         :exception ParsingError: if the specified command cannot be parsed because of a
         syntax error
         """
