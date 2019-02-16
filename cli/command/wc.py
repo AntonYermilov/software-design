@@ -11,10 +11,15 @@ class Wc(Command):
         super().__init__(args)
 
     @staticmethod
-    def _get_statistics(text: str, from_file: bool):
+    def _get_statistics(src, from_file: bool):
+        if from_file:
+            text = src.read()
+            cnt_bytes = os.path.getsize(src.name)
+        else:
+            text = src
+            cnt_bytes = len(text)
         cnt_lines = text.count('\n') + (0 if from_file else 1)
         cnt_words = len(list(filter(lambda w : len(w.strip()) > 0, text.split())))
-        cnt_bytes = len(text)
         return f'{cnt_lines}\t{cnt_words}\t{cnt_bytes}'
     
     def execute(self, data: str = None) -> str:
@@ -31,8 +36,7 @@ class Wc(Command):
         for i, arg in enumerate(self.args):
             if os.path.isfile(arg):
                 with open(arg, 'r') as src:
-                    text = src.read()
-                    output += Wc._get_statistics(text, True)
+                    output += Wc._get_statistics(src, True)
                     if len(self.args) > 0:
                         output += f'\t{arg}\n'
             elif os.path.isdir(arg):

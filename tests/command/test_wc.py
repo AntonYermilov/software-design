@@ -3,6 +3,7 @@ from cli.command.wc import Wc
 
 oneline_src = 'tests/resources/oneline.txt'
 multiline_src = 'tests/resources/multiline.txt'
+win_src = 'tests/resources/gitignore.dms'
 
 oneline_text = open(oneline_src, 'r').read()
 multiline_text = open(multiline_src, 'r').read()
@@ -58,3 +59,8 @@ def test_with_data_and_args():
     wc = Wc([oneline_src, multiline_src])
     data = 'hello world!\n\n!dlrow olleh\n'
     assert wc.execute(data) == f'1\t2\t14\t{oneline_src}\n8\t6\t40\t{multiline_src}\n'
+
+
+def test_windows_endlines():
+    wc = Wc([win_src])
+    assert wc.execute() == f'104\t158\t1307\t{win_src}\n'
