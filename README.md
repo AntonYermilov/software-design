@@ -24,11 +24,49 @@ Currently we support the following commands:
 * `echo` – write arguments to the standard output
 * `wc` – word, line, character, and byte count
 * `pwd` – return working directory name
+* `grep` – file pattern searcher
 * `exit` – terminate CLI
 
 Also current implementation of CLI supports pipes, variables and quotes.
 
-### Example
+## Command description
+
+#### `cat [file ...]`
+
+The cat utility reads files sequentially, writing them to the standard output.  The file operands are processed in command-line order.
+
+#### `echo [string ...]`
+
+The echo utility writes any specified operands, separated by single blank (\` ') characters and followed by a newline (\`\n') character, to the standard output.
+
+#### `wc [file ...]`
+
+The wc utility displays the number of lines, words, and bytes contained in each input file. A line is defined as a string of characters delimited by a <newline> character. Characters beyond the final <newline> character will not be included in the line count.
+
+#### `pwd`
+
+The pwd utility writes the absolute pathname of the current working directory to the standard output.
+
+#### `grep [-i] [-w] [-A num] pattern [file ...]`
+
+The grep utility searches any given input files, selecting lines that match one or more patterns.  By default, a pattern matches an input line if the regular expression (RE) in the pattern matches the input line without its trailing newline.  An empty expression matches every line.  Each input line that matches at least one of the patterns is written to the standard output.
+
+The following options are available:
+
+```
+-A num, --after-context=num
+             Print num lines of trailing context after each match.
+-i, --ignore-case
+             Perform case insensitive matching.  By default, grep is case sensitive.
+-w, --word-regexp
+             The expression is searched for as a word (as if surrounded by `[[:<:]]' and `[[:>:]]')
+```
+
+#### `exit`
+
+The exit utility terminates CLI.
+
+## Examples
 ```
 $ echo arg1 arg2  arg3
 arg1 arg2 arg3
