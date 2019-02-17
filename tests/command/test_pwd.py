@@ -1,7 +1,8 @@
 from cli.command.pwd import Pwd
+import os
 
 
-root_dir = 'software-design\n'
+root_dir = f'{os.getcwd()}\n'
 
 
 def test_pwd():
