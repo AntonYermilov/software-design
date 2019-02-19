@@ -45,3 +45,13 @@ def test_get_variable():
 def test_no_command_found_error():
     cli = init_standard_cli()
     assert cli.execute('echi "hello world"') == 'echi: command not found\n'
+
+
+def test_cd_integration():
+    cli = init_standard_cli()
+    assert cli.execute('cd kwakwa') == 'cd: kwakwa: not a directory\n'
+
+
+def test_ls_integration():
+    cli = init_standard_cli()
+    assert cli.execute('ls kwakwa') == 'ls: kwakwa: no such file or directory\n'

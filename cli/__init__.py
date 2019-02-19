@@ -1,5 +1,7 @@
 from .cli import CommandLineInterpreter
 from .env import Environment
+from .command.cd import Cd
+from .command.ls import Ls
 from .command.wc import Wc
 from .command.cat import Cat
 from .command.echo import Echo
@@ -18,7 +20,9 @@ _commands = {
     'cat': Cat,
     'echo': Echo,
     'pwd': Pwd,
-    'exit': Exit,
+    'cd': Cd,
+    'ls': Ls,
+    'exit': Exit
 }
 
 CLI = CommandLineInterpreter(

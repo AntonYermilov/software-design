@@ -1,5 +1,4 @@
 from .command import Command
-import os
 
 
 class Pwd(Command):
@@ -15,4 +14,5 @@ class Pwd(Command):
         :param data: string that should be used as an input for this command; ignored by this command
         :return: working directory name
         """
-        return os.getcwd() + '\n'
+        from cli import CLI
+        return CLI.environment.get_variable('PWD') + '\n'
