@@ -9,15 +9,15 @@ from Command classes:
 ## Class diagram
 
 <pre>
-           ––––––          ––––––––––
+           ––––––           ––––––––––
            |     | –––––––> | Parser |
            |     |          ––––––––––
 stdin –––> |     |              |
            | CLI |              | Variables
 stdout <–– |     |              v           <b>Variables</b>
-           |     |          –––––––––––––––          –––––––––––
+           |     |          –––––––––––––––           –––––––––––
            |     | –––––––> | Environment | <b><=======></b> | Command |
-           –––––––          –––––––––––––––          –––––––––––
+           –––––––          –––––––––––––––           –––––––––––
 </pre>
 
 Now I'm not fully satisfied with storing Environment as an attribute of global variable `CLI`. 
