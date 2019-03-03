@@ -1,7 +1,13 @@
 from cli.command.cat import Cat
+from pathlib import Path
+from io import StringIO
+import sys
 
-oneline_src = 'tests/resources/oneline.txt'
-multiline_src = 'tests/resources/multiline.txt'
+resources_src = Path('tests', 'resources')
+oneline_src = str(resources_src / 'oneline.txt')
+multiline_src = str(resources_src / 'multiline.txt')
+trash_src = str(resources_src / 'trash.txt')
+resources_src = str(resources_src)
 
 oneline_text = open(oneline_src, 'r').read()
 multiline_text = open(multiline_src, 'r').read()
@@ -38,13 +44,17 @@ def test_no_files():
 
 
 def test_file_not_exists():
-    cat = Cat(['tests/resources/trash.txt'])
-    assert cat.execute() == 'cat: tests/resources/trash.txt: no such file or directory\n'
+    cat = Cat([trash_src])
+    sys.stderr = StringIO()
+    assert cat.execute() == ''
+    assert sys.stderr.getvalue() == f'cat: {trash_src}: no such file or directory\n'
 
 
 def test_dir():
-    cat = Cat(['tests/resources'])
-    assert cat.execute() == 'cat: tests/resources: is a directory\n'
+    cat = Cat([resources_src])
+    sys.stderr = StringIO()
+    assert cat.execute() == ''
+    assert sys.stderr.getvalue() == f'cat: {resources_src}: is a directory\n'
 
 
 def test_with_data():

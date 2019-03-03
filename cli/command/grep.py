@@ -1,7 +1,8 @@
 from cli.command.command import Command
-from cli.command.util.argparse import CommandArgumentParser
+from cli.command.util.argparse import CommandArgumentParser, CommandArgumentParsingError
 import os
 import re
+import sys
 
 
 class Grep(Command):
@@ -16,7 +17,6 @@ class Grep(Command):
     """
     def __init__(self, args: list):
         super().__init__(args)
-        self._parse_arguments()
 
     def _parse_arguments(self):
         """
@@ -50,6 +50,11 @@ class Grep(Command):
         :param data: string that should be used as an input for this command if no files are provided
         :return: lines that match the pattern
         """
+        try:
+            self._parse_arguments()
+        except CommandArgumentParsingError as e:
+            sys.stderr.write(e.message)
+            return ''
 
         if len(self.files) == 0 and data is not None:
             return self._find_matchings('', data)
@@ -62,9 +67,9 @@ class Grep(Command):
                     source = f'{file}:' if len(self.files) > 1 else ''
                     output += self._find_matchings(source, text)
             elif os.path.isdir(file):
-                output += f'grep: {file}: is a directory\n'
+                sys.stderr.write(f'grep: {file}: is a directory\n')
             else:
-                output += f'grep: {file}: no such file or directory\n'
+                sys.stderr.write(f'grep: {file}: no such file or directory\n')
         return output
 
     def _find_matchings(self, source: str, data: str):

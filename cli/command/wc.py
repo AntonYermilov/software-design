@@ -1,5 +1,6 @@
 from .command import Command
 import os
+import sys
 
 
 class Wc(Command):
@@ -18,7 +19,7 @@ class Wc(Command):
         else:
             text = src
             cnt_bytes = len(text)
-        cnt_lines = text.count('\n') + (0 if from_file else 1)
+        cnt_lines = text.count('\n')
         cnt_words = len(list(filter(lambda w : len(w.strip()) > 0, text.split())))
         return f'{cnt_lines}\t{cnt_words}\t{cnt_bytes}'
     
@@ -40,8 +41,8 @@ class Wc(Command):
                     if len(self.args) > 0:
                         output += f'\t{arg}\n'
             elif os.path.isdir(arg):
-                output += f'wc: {arg}: is a directory\n'
+                sys.stderr.write(f'wc: {arg}: is a directory\n')
             else:
-                output += f'wc: {arg}: no such file or directory\n'
+                sys.stderr.write(f'wc: {arg}: no such file or directory\n')
 
         return output
