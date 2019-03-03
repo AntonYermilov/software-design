@@ -1,6 +1,5 @@
 from .parser import Parser, ParsingError
 from .env import Environment
-from .command.command import CommandExecutionError
 
 
 class CommandLineInterpreter:
@@ -25,6 +24,4 @@ class CommandLineInterpreter:
             expression = parser.parse()
             return expression.execute()
         except ParsingError as e:
-            return e.message
-        except CommandExecutionError as e:
             return e.message

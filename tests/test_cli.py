@@ -56,3 +56,20 @@ def test_no_command_found_error():
     sys.stderr = StringIO()
     assert cli.execute('echi "hello world"') == ''
     assert sys.stderr.getvalue() ==  'echi: command not found\n'
+
+
+def test_invalid_arguments_error_1():
+    cli = init_standard_cli()
+    sys.stderr = StringIO()
+    assert cli.execute('echo a | grep') == ''
+    assert sys.stderr.getvalue() == 'usage: grep [-i] [-w] [-A N] pattern [file [file ...]]\n' \
+                                    'grep: the following arguments are required: pattern, file\n'
+
+
+def test_invalid_arguments_error_2():
+    cli = init_standard_cli()
+    sys.stderr = StringIO()
+    assert cli.execute('echo a | grep -j a') == ''
+    assert sys.stderr.getvalue() == 'usage: grep [-i] [-w] [-A N] pattern [file [file ...]]\n' \
+                                    'grep: unrecognized arguments: -j\n'
+
