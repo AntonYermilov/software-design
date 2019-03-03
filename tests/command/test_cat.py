@@ -1,0 +1,69 @@
+from cli.command.cat import Cat
+from pathlib import Path
+from io import StringIO
+import sys
+
+resources_src = Path('tests', 'resources')
+oneline_src = str(resources_src / 'oneline.txt')
+multiline_src = str(resources_src / 'multiline.txt')
+trash_src = str(resources_src / 'trash.txt')
+resources_src = str(resources_src)
+
+oneline_text = open(oneline_src, 'r').read()
+multiline_text = open(multiline_src, 'r').read()
+
+
+def test_one_file_oneline():
+    cat = Cat([oneline_src])
+    assert cat.execute() == oneline_text
+
+
+def test_one_file_multiline():
+    cat = Cat([oneline_src])
+    assert cat.execute() == oneline_text
+
+
+def test_multiple_files():
+    cat = Cat([oneline_src, multiline_src])
+    assert cat.execute() == oneline_text + multiline_text
+
+
+def test_same_files_1():
+    cat = Cat([oneline_src, oneline_src, oneline_src])
+    assert cat.execute() == oneline_text + oneline_text + oneline_text
+
+
+def test_same_files_2():
+    cat = Cat([multiline_src, multiline_src])
+    assert cat.execute() == multiline_text + multiline_text
+
+
+def test_no_files():
+    cat = Cat([])
+    assert cat.execute() == ''
+
+
+def test_file_not_exists():
+    cat = Cat([trash_src])
+    sys.stderr = StringIO()
+    assert cat.execute() == ''
+    assert sys.stderr.getvalue() == f'cat: {trash_src}: no such file or directory\n'
+
+
+def test_dir():
+    cat = Cat([resources_src])
+    sys.stderr = StringIO()
+    assert cat.execute() == ''
+    assert sys.stderr.getvalue() == f'cat: {resources_src}: is a directory\n'
+
+
+def test_with_data():
+    cat = Cat([])
+    data = 'hello world!\n\n!dlrow olleh\n'
+    assert cat.execute(data) == data
+
+
+def test_with_data_and_args():
+    cat = Cat([oneline_src, multiline_src])
+    data = 'hello world!\n\n!dlrow olleh\n'
+    assert cat.execute(data) == oneline_text + multiline_text
