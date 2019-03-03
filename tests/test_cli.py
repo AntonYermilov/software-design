@@ -1,6 +1,13 @@
 from tests import init_standard_cli
 import sys
 from io import StringIO
+from pathlib import Path
+
+
+resources_src = Path('tests', 'resources')
+oneline_src = str(resources_src / 'oneline.txt')
+multiline_src = str(resources_src / 'multiline.txt')
+resources_src = str(resources_src)
 
 
 def test_execute_no_input():
@@ -20,17 +27,17 @@ def test_execute_pipe():
 
 def test_execute_unexpected_pipe_error():
     cli = init_standard_cli()
-    assert cli.execute('wc tests/resources/oneline.txt | ') == 'cli: syntax error near unexpected token `|\'\n'
+    assert cli.execute(f'wc {oneline_src} | ') == 'cli: syntax error near unexpected token `|\'\n'
 
 
 def test_execute_unexpected_backslash_error():
     cli = init_standard_cli()
-    assert cli.execute('wc tests/resources/oneline.txt \\') == 'cli: syntax error near unexpected token `\\\'\n'
+    assert cli.execute(f'wc {oneline_src} \\') == 'cli: syntax error near unexpected token `\\\'\n'
 
 
 def test_execute_matching_quote_error():
     cli = init_standard_cli()
-    assert cli.execute('wc "tests/something\'') == 'cli: no matching quote found\n'
+    assert cli.execute(f'wc "{oneline_src}\'') == 'cli: no matching quote found\n'
 
 
 def test_execute_set_variable():
