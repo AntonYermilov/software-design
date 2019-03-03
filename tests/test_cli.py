@@ -1,4 +1,6 @@
 from tests import init_standard_cli
+import sys
+from io import StringIO
 
 
 def test_execute_no_input():
@@ -13,7 +15,7 @@ def test_execute_simple_command():
 
 def test_execute_pipe():
     cli = init_standard_cli()
-    assert cli.execute('echo  "arg1   arg2"  arg3 | cat |  wc') == '2\t3\t17\n'
+    assert cli.execute('echo  "arg1   arg2"  arg3 | cat |  wc') == '1\t3\t17\n'
 
 
 def test_execute_unexpected_pipe_error():
@@ -44,4 +46,6 @@ def test_get_variable():
 
 def test_no_command_found_error():
     cli = init_standard_cli()
-    assert cli.execute('echi "hello world"') == 'echi: command not found\n'
+    sys.stderr = StringIO()
+    assert cli.execute('echi "hello world"') == ''
+    assert sys.stderr.getvalue() ==  'echi: command not found\n'

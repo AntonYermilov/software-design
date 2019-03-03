@@ -1,9 +1,14 @@
 from cli.command.wc import Wc
+from pathlib import Path
+import sys
+from io import StringIO
 
-
-oneline_src = 'tests/resources/oneline.txt'
-multiline_src = 'tests/resources/multiline.txt'
-win_src = 'tests/resources/gitignore.dms'
+resources_src = Path('tests', 'resources')
+oneline_src = str(resources_src / 'oneline.txt')
+multiline_src = str(resources_src / 'multiline.txt')
+trash_src = str(resources_src / 'trash.txt')
+win_src = str(resources_src / 'gitignore.dms')
+resources_src = str(resources_src)
 
 oneline_text = open(oneline_src, 'r').read()
 multiline_text = open(multiline_src, 'r').read()
@@ -40,19 +45,23 @@ def test_no_files():
 
 
 def test_file_not_exists():
-    wc = Wc(['tests/resources/trash.txt'])
-    assert wc.execute() == 'wc: tests/resources/trash.txt: no such file or directory\n'
+    wc = Wc([trash_src])
+    sys.stderr = StringIO()
+    assert wc.execute() == ''
+    assert sys.stderr.getvalue() == f'wc: {trash_src}: no such file or directory\n'
 
 
 def test_dir():
-    wc = Wc(['tests/resources'])
-    assert wc.execute() == 'wc: tests/resources: is a directory\n'
+    wc = Wc([resources_src])
+    sys.stderr = StringIO()
+    assert wc.execute() == ''
+    assert sys.stderr.getvalue() == f'wc: {resources_src}: is a directory\n'
 
 
 def test_with_data():
     wc = Wc([])
     data = 'hello world!\n\n!dlrow olleh\n'
-    assert wc.execute(data) == '4\t4\t27\n'
+    assert wc.execute(data) == '3\t4\t27\n'
 
 
 def test_with_data_and_args():

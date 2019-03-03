@@ -1,12 +1,18 @@
-from cli.command.extprocess import ExternalProcess, CommandNotFoundError
-import pytest
+from cli.command.extprocess import ExternalProcess
+from pathlib import Path
 import os
+import sys
+from io import StringIO
+
+
+script_src = Path('tests', 'resources', 'script.sh')
 
 
 def test_unknown_program():
     process = ExternalProcess('abacaba  228', [])
-    with pytest.raises(CommandNotFoundError):
-        process.execute()
+    sys.stderr = StringIO()
+    assert process.execute() == ''
+    assert sys.stderr.getvalue() == 'abacaba  228: command not found\n'
 
 
 def test_posix_script():
