@@ -1,6 +1,6 @@
 from .command import Command
 import os
-
+import sys
 
 class Cat(Command):
     """
@@ -27,8 +27,8 @@ class Cat(Command):
                 with open(arg, 'r') as src:
                     output += src.read()
             elif os.path.isdir(arg):
-                output += f'cat: {arg}: is a directory\n'
+                sys.stderr.write(f'cat: {arg}: is a directory\n')
             else:
-                output += f'cat: {arg}: no such file or directory\n'
+                sys.stderr.write(f'cat: {arg}: no such file or directory\n')
                 
         return output

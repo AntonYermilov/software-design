@@ -1,6 +1,6 @@
 # Architecture
 
-Architecture of CLI consists of three main components:
+Architecture of CLI consists of four main components:
 
 ## Components
 
@@ -18,10 +18,14 @@ Its main goal is to represent input in some convenient way and to tell you if so
 
 Parser uses the environment to make variable substitution.
 
+**Expression**
+
+Expression is a shell over all parsable commands. It corresponds either to the assignment or to the pipeline.
+
 **Command**
 
 Command is a basic class that provides interface for all executable commands, both implemented and not
-implemented in CLI.
+implemented in CLI. Multiple commands may be organized into a pipeline.
 
 All commands in this CLI implementation have the only public function `execute`, so we may think about every
 implemented command as of something that takes arguments, reads data from the standard input and writes data to the
@@ -37,19 +41,13 @@ In the infinite loop command line interpreter reads data from the standard input
 `CommandLineInterpreter` class.
 
 Inside it data is parsed with Parser basing on the predefined Environment, and if the parsing process succeeded we get
-an array of commands and their arguments (pipeline). After that we move through commands, execute them and pass their
-output either to the next commands, or to the standard output if no commands left.
+an executable Expression which is a shell over Pipeline and Assignment.
+
+In case an expression corresponds to assignment, its execution just add variable to the environment.
+
+In another case (i.t. an expression corresponds to the pipeline), program moves through all commands in the pipeline, execute
+them and pass their output either to the next commands, or to the standard output if no commands left.
 
 ## Class diagram
 
-```
-           –––––––          ––––––––––
-           |     | –––––––> | Parser |
-           |     |          ––––––––––
-stdin –––> |     |              |
-           | CLI |              | Variables
-stdout <–– |     |              v
-           |     |          –––––––––––––––          –––––––––––
-           |     | –––––––> | Environment | –––––––> | Command |
-           –––––––          –––––––––––––––          –––––––––––
-```
+![](./architecture.png)
