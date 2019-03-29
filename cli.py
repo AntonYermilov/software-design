@@ -4,8 +4,8 @@ from cli import CLI
 
 
 def get_current_dir():
-    home = CLI.environment.get_variable('HOME')
-    working_dir = CLI.environment.get_variable('PWD')
+    home = os.path.expanduser('~')
+    working_dir = os.getcwd()
     if working_dir.find(home) == 0 and (len(home) == len(working_dir) or working_dir[len(home)] == os.sep):
         working_dir = working_dir.replace(home, '~')
     return working_dir

@@ -27,7 +27,6 @@ class Cd(Command):
 
         current_path = os.getcwd()
         realpath = os.path.realpath(os.path.join(current_path, new_path))
-        print(f'current {current_path} new {new_path} realpath {realpath}')
         if os.path.isdir(realpath):
             os.chdir(realpath)
             return ''
