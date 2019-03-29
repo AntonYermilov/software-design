@@ -1,9 +1,9 @@
 import os
 
-from cli import Pwd, CLI
+from cli import Pwd
 from cli.command.cd import Cd
 
-directory = 'tests/resources/directory'
+directory = os.path.join('tests', 'resources', 'directory')
 initial_path = os.getcwd()
 
 

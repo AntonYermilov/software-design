@@ -18,10 +18,12 @@ class Cd(Command):
         :param data: piped input for this command; ignored by this command
         :returns empty string or error message
         """
-        from cli import CLI
 
-        if len(self.args) >= 1:
+        args_number = len(self.args)
+        if args_number == 1:
             new_path = self.args[0]
+        elif args_number > 1:
+            raise CommandExecutionError(f'cd: expected 0 to 1 arguments, found {args_number}\n')
         else:
             new_path = os.path.expanduser('~')
 

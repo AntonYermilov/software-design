@@ -2,8 +2,8 @@ import os
 
 from cli.command.ls import Ls
 
-directory = 'tests/resources/directory'
-file = 'tests/resources/directory/file.txt'
+directory = os.path.join('tests', 'resources', 'directory')
+file = os.path.join('tests', 'resources', 'directory', 'file.txt')
 
 
 def test_ls_dir():
