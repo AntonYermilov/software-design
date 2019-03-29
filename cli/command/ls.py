@@ -23,8 +23,7 @@ class Ls(Command):
         elif len(self.args) == 1:
             path = self.args[0]
         else:
-            from cli import CLI
-            path = CLI.environment.get_variable('PWD')
+            path = os.getcwd()
 
         if os.path.isfile(path):
             return os.path.realpath(path) + '\n'

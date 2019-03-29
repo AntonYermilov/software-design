@@ -16,16 +16,6 @@ def test_ls_file():
     assert ls == os.path.realpath(file) + '\n'
 
 
-def test_ls_piped():
-    ls = Ls([]).execute(file)
-    assert ls == os.path.realpath(file) + '\n'
-
-
-def test_ls_non_existing_path():
-    ls = Ls(['кукарямба']).execute()
-    assert ls == 'ls: кукарямба: no such file or directory\n'
-
-
 def test_ls_more_than_one_arg():
     ls = Ls(['arg1', 'arg2']).execute()
     assert ls == 'ls: 0 or 1 argument expected\n'

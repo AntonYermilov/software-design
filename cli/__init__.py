@@ -7,13 +7,9 @@ from .command.cat import Cat
 from .command.echo import Echo
 from .command.pwd import Pwd
 from .command.exit import Exit
-import os
 
 
-_variables = {
-    'PWD': os.getcwd(),
-    'HOME': os.path.expanduser('~')
-}
+_variables = {}
 
 _commands = {
     'wc': Wc,

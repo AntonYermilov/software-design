@@ -23,12 +23,13 @@ class Cd(Command):
         if len(self.args) >= 1:
             new_path = self.args[0]
         else:
-            new_path = CLI.environment.get_variable('HOME')
+            new_path = os.path.expanduser('~')
 
-        current_path = CLI.environment.get_variable('PWD')
+        current_path = os.getcwd()
         realpath = os.path.realpath(os.path.join(current_path, new_path))
+        print(f'current {current_path} new {new_path} realpath {realpath}')
         if os.path.isdir(realpath):
-            CLI.environment.set_variable('PWD', realpath)
+            os.chdir(realpath)
             return ''
         else:
             raise CommandExecutionError(f'cd: {new_path}: not a directory\n')
