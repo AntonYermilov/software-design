@@ -1,6 +1,6 @@
 import os
 
-from .command import Command
+from .command import Command, CommandExecutionError
 
 
 class Ls(Command):
@@ -22,8 +22,6 @@ class Ls(Command):
             return 'ls: 0 or 1 argument expected\n'
         elif len(self.args) == 1:
             path = self.args[0]
-        elif data is not None:
-            path = data
         else:
             from cli import CLI
             path = CLI.environment.get_variable('PWD')
@@ -34,4 +32,4 @@ class Ls(Command):
         if os.path.isdir(path):
             return '\n'.join(os.listdir(path)) + '\n'
 
-        return f'ls: {path}: no such file or directory\n'
+        raise CommandExecutionError(f'ls: {path}: no such file or directory\n')
