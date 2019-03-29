@@ -1,5 +1,6 @@
 import os
 
+from cli.command.command import CommandExecutionError
 from .command import Command
 
 
@@ -30,4 +31,4 @@ class Cd(Command):
             CLI.environment.set_variable('PWD', realpath)
             return ''
         else:
-            return f'cd: {new_path}: not a directory\n'
+            raise CommandExecutionError(f'cd: {new_path}: not a directory\n')
