@@ -1,5 +1,6 @@
-from .command import Command
 import os
+
+from .command import Command
 
 
 class Pwd(Command):
