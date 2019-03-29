@@ -1,11 +1,12 @@
 import sys
+import os
 from cli import CLI
 
 
 def get_current_dir():
     home = CLI.environment.get_variable('HOME')
     working_dir = CLI.environment.get_variable('PWD')
-    if working_dir.find(home) == 0 and (len(home) == len(working_dir) or working_dir[len(home)] == '/'):
+    if working_dir.find(home) == 0 and (len(home) == len(working_dir) or working_dir[len(home)] == os.sep):
         working_dir = working_dir.replace(home, '~')
     return working_dir
 
