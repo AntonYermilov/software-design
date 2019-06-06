@@ -1,0 +1,8 @@
+FROM python:3.7-alpine
+
+WORKDIR .
+ENV AWS_ACCESS_KEY_ID none
+ENV AWS_SECRET_ACCESS_KEY none
+ENV AWS_DEFAULT_REGION none
+RUN pip install boto3
+COPY . .

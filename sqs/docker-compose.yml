@@ -1,0 +1,18 @@
+version: "3"
+services:
+  localstack:
+    image: localstack/localstack:0.9.4
+    ports: ["4576:4576"]
+    environment: [SERVICES=sqs]
+  on_start:
+    build: .
+    command: python3.7 interact.py --initialize A B
+    depends_on: [localstack]
+  a:
+    build: .
+    command: python3.7 interact.py --interact A B
+    depends_on: [on_start]
+  b:
+    build: .
+    command: python3.7 interact.py --interact B A
+    depends_on: [on_start]
